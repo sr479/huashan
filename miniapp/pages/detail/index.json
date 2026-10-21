@@ -1,1 +1,5 @@
-{ "navigationBarTitleText": "服装与档期", "enablePullDownRefresh": true }
+{
+  "navigationBarTitleText": "服装与档期",
+  "enablePullDownRefresh": true,
+  "usingComponents": { "garment-photo": "/components/garment-photo/index" }
+}

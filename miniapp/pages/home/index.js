@@ -118,10 +118,20 @@ Page({
     if (this.data.loading || this.data.error) return;
     wx.navigateTo({
       url: `/pages/detail/index?id=${encodeURIComponent(event.currentTarget.dataset.id)}&start=${this.data.start}&end=${this.data.end}`,
+      fail(error) {
+        console.warn('花山节详情跳转失败', error.errMsg);
+        wx.showToast({ title: '暂时无法打开服装详情，请稍后重试', icon: 'none' });
+      },
     });
   },
   lookup() {
-    wx.navigateTo({ url: '/pages/lookup/index' });
+    wx.navigateTo({
+      url: '/pages/lookup/index',
+      fail(error) {
+        console.warn('花山节页面跳转失败', error.errMsg);
+        wx.showToast({ title: '暂时无法打开预约查询，请稍后重试', icon: 'none' });
+      },
+    });
   },
   callStore() {
     contact.callStore(this.data.settings);

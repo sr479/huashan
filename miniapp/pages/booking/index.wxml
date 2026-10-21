@@ -3,7 +3,7 @@
   <block wx:else>
     <view wx:if="{{loading}}" class="empty">正在核对服装和价格…</view>
     <view wx:if="{{garment}}" class="panel">
-      <view class="summary"><view class="thumbnail"><garment-photo src="{{garment.images[0]}}" name="{{garment.name}}" tone="{{garment.tone}}" /></view><view class="summary-text"><view class="eyebrow">{{garment.sku}} · {{garment.size}} 码</view><view class="summary-title">{{garment.name}}</view><view class="small muted">{{start}} — {{end}}</view><view class="small muted">共 {{days}} 天 · {{settings.returnTime}} 前归还</view></view></view>
+      <view class="summary"><view class="thumbnail"><garment-photo src="{{garment.images[0] || ''}}" name="{{garment.name}}" tone="{{garment.tone}}" /></view><view class="summary-text"><view class="eyebrow">{{garment.sku}} · {{garment.size}} 码</view><view class="summary-title">{{garment.name}}</view><view class="small muted">{{start}} — {{end}}</view><view class="small muted">共 {{days}} 天 · {{settings.returnTime}} 前归还</view></view></view>
       <view class="divider" /><view class="row"><text>租金</text><text class="price">¥{{rentalText}}</text></view><view class="row spaced"><text>押金另计</text><text>¥{{garment.depositText}}</text></view><view class="small muted spaced">租金、押金均到店办理，本次提交无需付款。</view>
     </view>
     <form wx:if="{{garment}}" bindsubmit="submit" class="panel">

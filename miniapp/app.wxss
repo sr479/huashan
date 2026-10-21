@@ -1,5 +1,6 @@
 page { background: #f8f5ef; color: #243c42; font-size: 28rpx; line-height: 1.6; }
-view, button, input, textarea { box-sizing: border-box; }
+view, button, input, textarea, form { box-sizing: border-box; }
+form { display: block; }
 button { margin: 0; font-size: 27rpx; font-weight: 500; border-radius: 14rpx; line-height: 1.5; padding: 22rpx 28rpx; color: #243c42; background: #fff; }
 button::after { border: none; }
 button[disabled] { opacity: .45; color: #243c42; background: #e4e6e3; }

@@ -14,9 +14,6 @@
     "backgroundColor": "#f8f5ef",
     "backgroundTextStyle": "dark"
   },
-  "usingComponents": {
-    "garment-photo": "/components/garment-photo/index"
-  },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"

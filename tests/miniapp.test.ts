@@ -191,6 +191,31 @@ test('小程序真实 API 联调：无登录浏览、预约防连点、后台确
     const garment = catalog.garments.find((g: any) => g.sku === 'MZ-006');
     const calendar = await native.api.calendar(garment.id, '2026-10');
     assert.equal(calendar.days.length, 31);
+    const home = native.page('home');
+    home.data = { ...home.data, start: '2026-10-21', end: '2026-10-21', today: '2026-10-21' };
+    await home.load();
+    home.openGarment({ currentTarget: { dataset: { id: garment.id } } });
+    assert.equal(
+      native.navigations.at(-1),
+      `/pages/detail/index?id=${garment.id}&start=2026-10-21&end=2026-10-21`,
+    );
+    const detail = native.page('detail');
+    detail.data = {
+      ...detail.data,
+      id: garment.id,
+      start: '2026-10-21',
+      end: '2026-10-21',
+      today: '2026-10-21',
+      month: '2026-10',
+    };
+    await Promise.all([detail.load(), detail.loadCalendar()]);
+    assert.equal(detail.data.garment.available, true);
+    assert.equal(detail.data.cells.filter((cell: any) => !cell.blank).length, 31);
+    detail.book();
+    assert.equal(
+      native.navigations.at(-1),
+      `/pages/booking/index?id=${garment.id}&start=2026-10-21&end=2026-10-21`,
+    );
     const booking = native.page('booking');
     booking.data = {
       ...booking.data,

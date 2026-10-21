@@ -26,10 +26,10 @@
   <view wx:elif="{{loading}}" class="empty">正在核对服装与档期…</view>
   <view wx:else>
     <view class="collection">
-      <view wx:for="{{garments}}" wx:key="id" class="garment-card" data-id="{{item.id}}" bindtap="openGarment" role="button" aria-label="{{item.name}}，查看详情与档期">
-        <view class="card-photo"><garment-photo src="{{item.images[0]}}" name="{{item.name}}" tone="{{item.tone}}" /><text class="sku">{{item.sku}} · 仅 1 套</text></view>
+      <button wx:for="{{garments}}" wx:key="id" class="garment-card" data-id="{{item.id}}" bindtap="openGarment" aria-label="{{item.name}}，查看详情与档期">
+        <view class="card-photo"><garment-photo src="{{item.images[0] || ''}}" name="{{item.name}}" tone="{{item.tone}}" /><text class="sku">{{item.sku}} · 仅 1 套</text></view>
         <view class="card-content"><view class="small muted">{{item.category}} · {{item.size}} 码</view><view class="garment-name">{{item.name}}</view><view class="price">¥{{item.priceText}}<text class="price-unit">/天</text></view><view class="badge {{item.available ? 'available' : 'unavailable'}}">{{item.availabilityText}}</view><view class="current-state">{{item.currentText}}</view><view class="card-link">查看服装与档期 ›</view></view>
-      </view>
+      </button>
     </view>
     <view wx:if="{{!garments.length}}" class="empty">暂时没有符合条件的服装<view class="small">可以调整日期、搜索或分类后再试。</view></view>
   </view>

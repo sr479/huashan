@@ -1,1 +1,4 @@
-{ "navigationBarTitleText": "提交预约" }
+{
+  "navigationBarTitleText": "提交预约",
+  "usingComponents": { "garment-photo": "/components/garment-photo/index" }
+}
