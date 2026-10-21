@@ -60,7 +60,7 @@ NODE_ENV=production npm start
 
 ## 腾讯云部署
 
-以下是可直接使用的部署配置，尚未替你购买云资源、修改域名解析或上线公网。
+以下是可直接使用的部署配置；目标实例的运行状态、域名和备案状态应在部署时核对。
 
 已有服务器同时运行其他业务时，先查看[共用服务器部署方案](docs/腾讯云部署.md)。下面的 Caddy 配置适用于独立实例或 80/443 确认空闲的服务器。
 
@@ -75,6 +75,16 @@ NODE_ENV=production npm start
 
 应用不依赖 Google 字体、外部图片或第三方 CDN，服装实拍由本机存储提供。
 
+### 临时云端验收
+
+`deploy/compose.preview.yaml` 提供独立的 `huashanjie-preview` 项目、测试数据卷和示例服装，应用仅绑定 `127.0.0.1:3400`，限用半个 CPU、384 MiB 内存。测试环境应使用单独生成的后台密码，不要录入真实顾客资料。
+
+将配置复制到服务器 `/opt/huashanjie-preview/compose.yaml`，在该目录的私有 `.env` 中设置 `PREVIEW_ORIGIN=https://<公网IP>:8443`、`ADMIN_PASSWORD`、`APP_IMAGE_TAG`。使用已经校验版本的应用镜像启动；不要在共用实例编译镜像。
+
+`deploy/nginx.preview.conf.example` 使用有效 IP 证书和独立 HTTP 访问密码，初始仅监听回环地址。开放测试前先核对无密码时返回 401、带访问密码后页面和 API 正常、后台安全 Cookie 与登录退出正常；再核对测试范围、未绑定域名、云防火墙和到期时间。
+
+临时测试入口应设置自动到期任务，调用 `deploy/stop-preview.sh` 停止独立容器、撤下测试 Nginx 入口并保留测试数据。该脚本要求复制到 `/opt/huashanjie-preview/stop-preview.sh`。测试数据不合并到正式库；测试入口不用于正式对外经营，正式开放前仍需核对相应备案要求。
+
 ## 备份与恢复
 
 ```bash
@@ -87,7 +97,7 @@ docker compose exec -T app npm run backup
 
 备份脚本使用 SQLite `VACUUM INTO` 生成一致的数据库快照，同时复制实拍目录，写入 `data/backups/<时间戳>/`，不会删除旧备份。可设置 `BACKUP_DIR` 指向额外磁盘；应另存异地副本。
 
-`deploy/backup.service`、`deploy/backup.timer` 提供北京时间每日 03:00 的 systemd 备份配置，**仅提供配置，尚未在任何服务器启用**。部署路径与 Docker 路径确认后，可安装到 `/etc/systemd/system/`，再启用 `backup.timer`。
+`deploy/backup.service`、`deploy/backup.timer` 提供北京时间每日 03:00 的 systemd 备份配置。先核对目标实例是否已经启用；尚未配置时，确认部署路径与 Docker 路径后安装到 `/etc/systemd/system/`，再启用 `huashanjie-backup.timer`。
 
 恢复时先停止应用，将选定备份的数据库和 `uploads/` 还原至持久化数据目录，保留原数据副本，并删除目标库旧的 `-wal`、`-shm` 附属文件后再启动。用管理员后台核对服装和最近订单。
 
