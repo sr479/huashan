@@ -81,7 +81,7 @@ NODE_ENV=production npm start
 
 将配置复制到服务器 `/opt/huashanjie-preview/compose.yaml`，在该目录的私有 `.env` 中设置 `PREVIEW_ORIGIN=https://<公网IP>:8443`、`ADMIN_PASSWORD`、`APP_IMAGE_TAG`。使用已经校验版本的应用镜像启动；不要在共用实例编译镜像。
 
-`deploy/nginx.preview.conf.example` 使用有效 IP 证书和独立 HTTP 访问密码，初始仅监听回环地址。开放测试前先核对无密码时返回 401、带访问密码后页面和 API 正常、后台安全 Cookie 与登录退出正常；再核对测试范围、未绑定域名、云防火墙和到期时间。
+`deploy/nginx.preview.conf.example` 使用有效 IP 证书，顾客端直接访问，管理页面与管理 API 保留独立 HTTP 访问密码和应用登录验证；初始仅监听回环地址。开放测试前先核对顾客页面、目录及图片无密码可访问，管理页面和管理 API 无入口密码时返回 401、带入口密码后后台登录退出正常；再核对安全 Cookie、测试范围、未绑定域名、云防火墙和到期时间。
 
 临时测试入口应设置自动到期任务，调用 `deploy/stop-preview.sh` 停止独立容器、撤下测试 Nginx 入口并保留测试数据。该脚本要求复制到 `/opt/huashanjie-preview/stop-preview.sh`。测试数据不合并到正式库；测试入口不用于正式对外经营，正式开放前仍需核对相应备案要求。
 
