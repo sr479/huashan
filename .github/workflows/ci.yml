@@ -1,0 +1,44 @@
+name: 代码检查
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: 测试与构建
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 配置 Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: 安装锁定版本的依赖
+        run: npm ci --no-fund
+      - name: 业务与接口测试
+        run: npm test
+      - name: 类型检查与生产构建
+        run: npm run build
+      - name: 校验部署配置
+        env:
+          ADMIN_PASSWORD: CI-only-config-check-2026
+        run: docker compose config --quiet
+      - name: 构建生产镜像
+        run: docker build --tag huashanjie:ci .

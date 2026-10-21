@@ -1,0 +1,9 @@
+[Unit]
+Description=花山节数据库与实拍备份
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/huashanjie
+ExecStart=/usr/bin/docker compose exec -T app npm run backup
