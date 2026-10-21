@@ -1,0 +1,7 @@
+<view class="page"><view class="eyebrow">花山之约</view><view class="title spaced">查询我的预约</view><view class="muted spaced">无需注册账号。使用预约编号和预留手机号，查看店主确认状态。</view>
+  <form class="panel spaced" bindsubmit="submit">
+    <view class="field"><text class="field-label">预约编号</text><input name="orderNo" class="input" placeholder="HS 开头的完整预约编号" maxlength="40" /></view>
+    <view class="field"><text class="field-label">预留手机号</text><input name="phone" class="input" type="number" placeholder="预约时填写的手机号" maxlength="11" /></view>
+    <view wx:if="{{error}}" class="error">{{error}}</view><button class="primary wide spaced" form-type="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在查询…' : '查询预约'}}</button>
+  </form><view class="small muted">预约编号在提交成功的回执中。忘记编号时，请联系门店核实；请勿把预约编号与手机号一起转发给他人。</view>
+</view>

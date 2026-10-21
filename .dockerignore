@@ -17,3 +17,4 @@ uploads
 *.p12
 *.pfx
 deploy/*.env
+miniapp

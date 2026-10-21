@@ -1,0 +1,7 @@
+<view class="page"><view class="title">预约信息与隐私说明</view><view class="small muted spaced">{{settings.storeName || '花山节'}} · 到店取还服务</view>
+  <view class="panel spaced"><view class="heading">我们需要哪些信息</view><view>浏览服装、价格和档期无需注册账号。提交预约时，需要填写称呼、联系电话、服装及取还日期；备注为选填，请勿填写身份证、银行卡等无关信息。</view></view>
+  <view class="panel"><view class="heading">信息用于什么</view><view>门店使用预约信息联系你确认档期、安排取还、处理租赁及相关结算。服装列表和公开档期不会展示其他顾客的姓名、电话或预约详情。</view></view>
+  <view class="panel"><view class="heading">如何查询与更正</view><view>使用预约编号和预留手机号可以查询回执。请妥善保存编号，避免与手机号一起分享。需要修改、取消预约，或查阅、更正、申请删除个人信息时，请联系门店处理；涉及尚未完成的租赁或依法需要保留的记录，将由门店说明处理方式。</view><view class="store-line">联系电话：{{settings.phone || '以门店公布的联系方式为准'}}</view><view wx:if="{{settings.wechat}}" class="store-line">门店微信：{{settings.wechat}}</view><button wx:if="{{settings.phone}}" class="link" bindtap="callStore">联系门店 ›</button></view>
+  <view class="panel"><view class="heading">到店付款与租赁规则</view><view>线上提交是预约申请，需店主确认后生效；待确认申请不锁定库存。租金与押金在门店收退，不在小程序内扣款。</view><view class="rule-text spaced">{{settings.rentalRules}}</view></view>
+  <view wx:if="{{error}}" class="error">{{error}}<button class="link" bindtap="load">重新加载门店资料</button></view>
+</view>

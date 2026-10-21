@@ -1,0 +1,8 @@
+.summary { display: flex; align-items: center; gap: 24rpx; }
+.thumbnail { width: 140rpx; height: 180rpx; flex-shrink: 0; border-radius: 12rpx; overflow: hidden; }
+.summary-text { flex: 1; }
+.summary-title { font-size: 29rpx; font-weight: 600; margin: 8rpx 0; }
+.rule-box { background: #f5f4ed; border-radius: 12rpx; padding: 24rpx; font-size: 25rpx; }
+.consent { display: flex; gap: 12rpx; align-items: flex-start; font-size: 24rpx; color: #647366; margin-top: 30rpx; }
+.consent checkbox { flex-shrink: 0; transform: scale(.85); transform-origin: left top; }
+.privacy-link { color: #426966; font-size: 24rpx; margin: 18rpx 0; padding: 10rpx 0; }

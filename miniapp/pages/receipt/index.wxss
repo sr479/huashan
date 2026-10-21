@@ -1,0 +1,4 @@
+.receipt-header { text-align: center; padding: 20rpx 20rpx 36rpx; }
+.seal { font-size: 72rpx; color: #ad7256; }
+.order-number { font-size: 31rpx; letter-spacing: 1rpx; font-weight: 600; padding: 18rpx 0 24rpx; word-break: break-all; }
+.garment-title { font-size: 30rpx; }

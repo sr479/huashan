@@ -1,0 +1,22 @@
+<view class="page">
+  <view wx:if="{{createdOrderNo}}" class="panel"><view class="title">预约申请已提交</view><view class="store-line">请勿重复提交，店主确认后生效。</view><view class="spaced">预约编号：{{createdOrderNo}}</view><button class="secondary spaced" bindtap="copyOrder">复制预约编号</button><button class="primary spaced" bindtap="showReceipt">查看预约回执</button></view>
+  <block wx:else>
+    <view wx:if="{{loading}}" class="empty">正在核对服装和价格…</view>
+    <view wx:if="{{garment}}" class="panel">
+      <view class="summary"><view class="thumbnail"><garment-photo src="{{garment.images[0]}}" name="{{garment.name}}" tone="{{garment.tone}}" /></view><view class="summary-text"><view class="eyebrow">{{garment.sku}} · {{garment.size}} 码</view><view class="summary-title">{{garment.name}}</view><view class="small muted">{{start}} — {{end}}</view><view class="small muted">共 {{days}} 天 · {{settings.returnTime}} 前归还</view></view></view>
+      <view class="divider" /><view class="row"><text>租金</text><text class="price">¥{{rentalText}}</text></view><view class="row spaced"><text>押金另计</text><text>¥{{garment.depositText}}</text></view><view class="small muted spaced">租金、押金均到店办理，本次提交无需付款。</view>
+    </view>
+    <form wx:if="{{garment}}" bindsubmit="submit" class="panel">
+      <view class="title">留个联系方式</view><view class="small muted spaced">门店会联系你确认服装与到店时间。</view>
+      <view class="field"><text class="field-label">称呼 *</text><input class="input" name="guestName" placeholder="怎么称呼你" maxlength="40" /></view>
+      <view class="field"><text class="field-label">联系电话 *</text><input class="input" name="phone" type="number" placeholder="11 位中国大陆手机号" maxlength="11" /></view>
+      <view class="field"><text class="field-label">备注（选填）</text><textarea class="input" name="note" placeholder="如：希望下午到店试穿，或需要店主留意的事项" maxlength="500" /></view>
+      <view class="rule-box"><view>预约提交后，需等待店主确认。</view><view class="rule-text spaced">{{settings.rentalRules || '到店试穿并核对衣服与配饰；支付租金和押金后取衣，按约定时间归还。'}}</view></view>
+      <checkbox-group bindchange="changeConsent"><label class="consent"><checkbox value="agree" checked="{{consent}}" color="#294e57" /><text>我已阅读租赁规则，同意门店使用填写的信息联系并办理本次预约。</text></label></checkbox-group>
+      <navigator class="privacy-link" url="/pages/privacy/index">查看预约信息与隐私说明 ›</navigator>
+      <view wx:if="{{error}}" class="error">{{error}}</view>
+      <button class="primary wide spaced" form-type="submit" disabled="{{loading || submitting || !consent || !garment.available}}" loading="{{submitting}}">{{submitting ? '正在提交…' : '提交预约申请'}}</button>
+    </form>
+    <view wx:if="{{!garment && error}}" class="error">{{error}}<button class="link" bindtap="load">重新查询</button></view>
+  </block>
+</view>

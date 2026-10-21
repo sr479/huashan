@@ -20,3 +20,6 @@ uploads/
 id_rsa
 id_ed25519
 deploy/*.env
+miniapp/config.js
+miniapp/project.config.json
+miniapp/project.private.config.json

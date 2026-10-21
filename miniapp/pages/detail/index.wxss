@@ -1,0 +1,17 @@
+.gallery { height: 710rpx; width: 100%; border-radius: 22rpx; overflow: hidden; }
+.gallery-image { width: 100%; height: 100%; }
+.photo-note { font-size: 23rpx; color: #7d887b; margin: 18rpx 0 26rpx; text-align: center; }
+.spec { margin: 16rpx 0; font-size: 25rpx; display: flex; gap: 20rpx; }
+.spec > text { color: #7c867b; width: 150rpx; flex-shrink: 0; }
+.spec > view { flex: 1; }
+.section-title { font-size: 29rpx; font-weight: 600; }
+.month-button { padding: 8rpx 24rpx; font-size: 36rpx; background: #f4f4ed; }
+.calendar { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 8rpx; margin-top: 24rpx; }
+.weekday { text-align: center; font-size: 23rpx; color: #869082; padding-bottom: 8rpx; }
+.day { padding: 10rpx 0; font-size: 27rpx; line-height: 1.4; border-radius: 8rpx; background: #edf2e9; color: #416f50; min-height: 82rpx; }
+.day-label { font-size: 18rpx; }
+.day-reserved { background: #f3ebd7; color: #8e7955; }
+.day-rented { background: #f7e4dc; color: #a86049; }
+.day-cleaning, .day-maintenance { background: #ebe9e5; color: #7d7c77; }
+.day[disabled] { opacity: .65; }
+.day.selected { box-shadow: inset 0 0 0 3rpx #294e57; }
