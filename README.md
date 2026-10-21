@@ -2,6 +2,10 @@
 
 面向到店取还业务的顾客端与门店管理后台。前后端共享真实数据库；示例服装、订单和插画已明确标记，可用于首次体验。
 
+源码：[sr479/huashan](https://github.com/sr479/huashan) · [版本记录](CHANGELOG.md) · [腾讯云部署与更新说明](docs/腾讯云部署.md)
+
+`main` 为可运行主分支，正式发布使用 `vX.Y.Z` 标签。GitHub Actions 自动运行测试、类型检查、生产构建与容器构建；服务器部署由人工选择版本后执行。提交信息默认使用中文。
+
 ## 本地运行
 
 要求 Node.js 22.13 或更高版本。项目使用 Node 内置 SQLite，目前 Node 22 会显示 experimental 提示，不影响启动。
@@ -57,6 +61,8 @@ NODE_ENV=production npm start
 ## 腾讯云部署
 
 以下是可直接使用的部署配置，尚未替你购买云资源、修改域名解析或上线公网。
+
+已有服务器同时运行其他业务时，先查看[共用服务器部署方案](docs/腾讯云部署.md)。下面的 Caddy 配置适用于独立实例或 80/443 确认空闲的服务器。
 
 1. 将项目放到腾讯云服务器 `/opt/huashanjie`，安装 Docker 与 Compose 插件。
 2. 复制 `deploy/production.env.example` 为服务器根目录 `.env`，设置真实随机管理密码、账号和域名。不要沿用本地体验密码。

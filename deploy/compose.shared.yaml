@@ -1,0 +1,6 @@
+# 与已有业务共用服务器时，只启动 app，沿用宿主机现有的 HTTPS 反向代理。
+# docker compose -f compose.yaml -f deploy/compose.shared.yaml up -d --build --wait app
+services:
+  app:
+    ports:
+      - '127.0.0.1:${APP_BIND_PORT:-3300}:3000'
