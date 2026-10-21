@@ -1,0 +1,27 @@
+# 使用前替换 __PREVIEW_IP__；要求已有覆盖该 IP 的受信任证书。
+# 初始只监听回环地址，核对访问密码、自动到期和云防火墙规则后再开放测试。
+server {
+    listen 127.0.0.1:8443 ssl;
+    server_name __PREVIEW_IP__;
+    if ($host != __PREVIEW_IP__) { return 444; }
+
+    ssl_certificate /etc/letsencrypt/live/__PREVIEW_IP__/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/__PREVIEW_IP__/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    client_max_body_size 8m;
+
+    auth_basic "Huashanjie private preview";
+    auth_basic_user_file /etc/nginx/huashanjie-preview.htpasswd;
+    add_header X-Robots-Tag "noindex, nofollow" always;
+    access_log /var/log/nginx/huashanjie-preview.access.log;
+    error_log /var/log/nginx/huashanjie-preview.error.log;
+
+    location / {
+        proxy_pass http://127.0.0.1:3400;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Authorization "";
+    }
+}

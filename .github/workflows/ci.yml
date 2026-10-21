@@ -39,6 +39,10 @@ jobs:
       - name: 校验部署配置
         env:
           ADMIN_PASSWORD: CI-only-config-check-2026
-        run: docker compose config --quiet
+          PREVIEW_ORIGIN: https://192.0.2.1:8443
+        run: |
+          docker compose config --quiet
+          docker compose -f deploy/compose.preview.yaml config --quiet
+          sh -n deploy/stop-preview.sh
       - name: 构建生产镜像
         run: docker build --tag huashanjie:ci .
