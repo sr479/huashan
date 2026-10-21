@@ -2,5 +2,15 @@
 # docker compose -f compose.yaml -f deploy/compose.shared.yaml up -d --build --wait app
 services:
   app:
+    cpus: '0.75'
+    mem_limit: 512m
+    pids_limit: 128
+    cap_drop: [ALL]
+    security_opt: ['no-new-privileges:true']
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
     ports:
       - '127.0.0.1:${APP_BIND_PORT:-3300}:3000'

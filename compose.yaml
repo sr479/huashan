@@ -2,6 +2,7 @@ name: huashanjie
 
 services:
   app:
+    image: huashanjie:${APP_IMAGE_TAG:-local}
     build: .
     restart: unless-stopped
     environment:
