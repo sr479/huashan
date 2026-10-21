@@ -1,12 +1,17 @@
 const config = require('../config');
 const { resolveBase, imageUrl } = require('./domain');
+const { networkFailure } = require('./network');
 
-function baseUrl() {
+function environment() {
   let environment = 'release';
   try {
     environment = wx.getAccountInfoSync().miniProgram.envVersion;
   } catch (_) {}
-  return resolveBase(config, environment);
+  return environment;
+}
+
+function baseUrl() {
+  return resolveBase(config, environment());
 }
 
 function request(path, method = 'GET', data) {
@@ -38,14 +43,8 @@ function request(path, method = 'GET', data) {
         }
         resolve(body);
       },
-      fail() {
-        reject(
-          new Error(
-            method === 'POST'
-              ? '连接中断，暂未确认操作结果。请勿连续提交，可联系门店核实。'
-              : '暂时无法连接门店，请检查网络后重试',
-          ),
-        );
+      fail(error) {
+        reject(networkFailure(error, method, environment() === 'develop'));
       },
     });
   });

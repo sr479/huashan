@@ -13,6 +13,7 @@ const root = fileURLToPath(new URL('../miniapp/', import.meta.url));
 const require = createRequire(import.meta.url);
 const view = require('../miniapp/utils/view.js');
 const domain = require('../miniapp/utils/domain.js');
+const network = require('../miniapp/utils/network.js');
 
 test('小程序按北京时间选日期，计租及跨月清洗提示与后台一致', () => {
   assert.equal(view.todayInChina(new Date('2026-12-31T16:01:00Z')), '2027-01-01');
@@ -86,13 +87,13 @@ function nativeHarness(base: string, requestLog: { path: string; header: object 
   let app: any;
   let definition: any;
   const navigations: string[] = [];
-  let networkFailure = false;
+  let networkFailure: object | null = null;
   const wx = {
     getAccountInfoSync: () => ({ miniProgram: { envVersion: 'develop' } }),
     request(options: any) {
       requestLog.push({ path: new URL(options.url).pathname, header: options.header });
       if (networkFailure) {
-        options.fail({});
+        options.fail(networkFailure);
         return;
       }
       void fetch(options.url, {
@@ -144,8 +145,8 @@ function nativeHarness(base: string, requestLog: { path: string; header: object 
     app,
     navigations,
     api: load(resolve(root, 'utils/api.js')),
-    failNetwork() {
-      networkFailure = true;
+    failNetwork(errMsg = '') {
+      networkFailure = { errMsg };
     },
     page(name: string): any {
       load(resolve(root, 'pages', name, 'index.js'));
@@ -160,6 +161,35 @@ function nativeHarness(base: string, requestLog: { path: string; header: object 
     },
   };
 }
+
+test('小程序网络失败区分域名、证书和超时，不透传敏感错误或自动重发预约', async () => {
+  for (const [errMsg, code] of [
+    ['request:fail url not in domain list', 'NET_DOMAIN'],
+    ['request:fail ssl hand shake error', 'NET_TLS'],
+    ['request:fail timeout', 'NET_TIMEOUT'],
+    ['request:fail network is unreachable', 'NET_OFFLINE'],
+    ['request:fail ERR_CONNECTION_REFUSED', 'NET_CONNECT'],
+    ['request:fail', 'NET_UNKNOWN'],
+  ]) {
+    const requests: { path: string; header: object }[] = [];
+    const native = nativeHarness('http://127.0.0.1:3000', requests);
+    native.failNetwork(errMsg + ' https://example.invalid?phone=13900000000&token=secret');
+    await assert.rejects(native.api.catalog('2026-10-21', '2026-10-21'), (error: any) => {
+      assert.equal(error.code, code);
+      assert.match(error.message, new RegExp(code));
+      assert.doesNotMatch(error.message, /13900000000|secret|example\.invalid/);
+      return true;
+    });
+    await assert.rejects(native.api.book({}), (error: any) => {
+      assert.match(error.message, /暂未确认操作结果/);
+      assert.doesNotMatch(error.message, /重试预约|13900000000|secret/);
+      return true;
+    });
+    assert.equal(requests.filter((request) => request.path === '/api/bookings').length, 1);
+    const release = network.networkFailure({ errMsg }, 'GET', false);
+    assert.equal(release.message, '暂时无法连接门店，请检查网络后重试');
+  }
+});
 
 test('小程序真实 API 联调：无登录浏览、预约防连点、后台确认后查询回执', async () => {
   const dir = mkdtempSync(resolve(tmpdir(), 'hs-miniapp-'));
