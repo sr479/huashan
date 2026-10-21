@@ -82,6 +82,46 @@ test('小程序体验版和正式版拒绝本地/IP入口，不携带管理凭�
   );
 });
 
+test('受邀体验版仅在明确启用且未到期时允许 HTTPS 测试入口，正式版不接受例外', () => {
+  const now = Date.parse('2026-10-21T08:00:00Z');
+  const expires = '2026-10-24T13:45:00+08:00';
+  const config = {
+    apiBaseUrl: 'https://192.0.2.1:8443',
+    allowLocalDevelopment: false,
+    allowTemporaryTrial: true,
+    temporaryTrialExpiresAt: expires,
+  };
+  assert.equal(domain.resolveBase(config, 'trial', now), config.apiBaseUrl);
+  assert.throws(() => domain.resolveBase(config, 'release', now));
+  assert.throws(() => domain.resolveBase(config, 'trial', Date.parse(expires)), /已到期/);
+  for (const temporaryTrialExpiresAt of [
+    '',
+    'not-a-date',
+    '2026-10-24',
+    '2026-10-24T13:45:00',
+    '2026-10-20T08:00:00Z',
+  ])
+    assert.throws(
+      () => domain.resolveBase({ ...config, temporaryTrialExpiresAt }, 'trial', now),
+      /已到期/,
+    );
+  for (const apiBaseUrl of [
+    'http://192.0.2.1:8443',
+    'https://127.0.0.1:8443',
+    'https://10.2.0.13:8443',
+    'https://192.168.1.2',
+    'https://172.16.0.1',
+    'https://localhost',
+    'https://example.invalid',
+    'https://admin:secret@example.com',
+    'https://example.com/path',
+  ])
+    assert.throws(() => domain.resolveBase({ ...config, apiBaseUrl }, 'trial', now));
+  assert.throws(() =>
+    domain.resolveBase({ ...config, allowTemporaryTrial: false }, 'trial', now),
+  );
+});
+
 // 运行原生小程序 Page 和 wx.request 适配器，不用浏览器实现冒充微信运行时。
 function nativeHarness(base: string, requestLog: { path: string; header: object }[]) {
   let app: any;

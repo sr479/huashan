@@ -44,7 +44,11 @@ function request(path, method = 'GET', data) {
         resolve(body);
       },
       fail(error) {
-        reject(networkFailure(error, method, environment() === 'develop'));
+        const runtime = environment();
+        const diagnostics =
+          runtime === 'develop' ||
+          (runtime === 'trial' && config.allowTemporaryTrial === true);
+        reject(networkFailure(error, method, diagnostics));
       },
     });
   });
