@@ -1,0 +1,33 @@
+<view class="page bottom-space">
+  <view wx:if="{{error}}" class="error">{{error}}<button class="link" bindtap="load">重新查询</button></view>
+  <view wx:elif="{{!garment}}" class="empty">正在查询服装…</view>
+  <block wx:if="{{garment}}">
+    <swiper wx:if="{{garment.images.length}}" class="gallery" indicator-dots circular>
+      <swiper-item wx:for="{{garment.images}}" wx:key="*this"><image class="gallery-image" src="{{item}}" mode="aspectFill" data-url="{{item}}" bindtap="previewPhoto" /></swiper-item>
+    </swiper>
+    <view wx:else class="gallery"><garment-photo name="{{garment.name}}" tone="{{garment.tone}}" /></view>
+    <view class="photo-note">{{garment.sku}} · 独立管理 · 仅 1 套{{garment.demo ? ' · 示例服装' : ''}}</view>
+    <view class="panel">
+      <view class="eyebrow">{{garment.category}} · {{garment.size}} 码</view><view class="title spaced">{{garment.name}}</view>
+      <view class="row spaced"><view class="price">¥{{garment.priceText}}<text class="price-unit">/天</text></view><view class="small muted">押金 ¥{{garment.depositText}} 另计</view></view>
+      <view class="store-line">{{garment.description}}</view><view class="divider" />
+      <view class="spec"><text>尺寸参考</text><view>{{garment.measurements || '请到店试穿确认具体尺寸'}}</view></view>
+      <view class="spec"><text>配套清单</text><view><text wx:for="{{garment.accessories}}" wx:key="*this">{{index > 0 ? '、' : ''}}{{item}}</text><text wx:if="{{!garment.accessories.length}}">请向店主确认</text></view></view>
+      <view class="spec"><text>当前状态</text><view>{{garment.currentText}}</view></view>
+      <view class="spec"><text>预计最早可租</text><view>{{garment.nextAvailable || '等待店主确认'}}</view></view>
+      <view wx:if="{{garment.expectedReturn}}" class="spec"><text>预计归还</text><view>{{garment.expectedReturn}} {{settings.returnTime}} 前{{garment.overdue ? ' · 已逾期未还' : ''}}</view></view>
+    </view>
+    <view class="panel"><view class="section-title">选择取还日期</view>
+      <view class="date-row"><view class="field"><text class="field-label">取衣日期</text><picker mode="date" value="{{start}}" start="{{today}}" end="{{maxStart}}" bindchange="changeStart"><view class="date-value">{{start}} ▾</view></picker></view><view class="field"><text class="field-label">归还日期</text><picker mode="date" value="{{end}}" start="{{start}}" end="{{maxEnd}}" bindchange="changeEnd"><view class="date-value">{{end}} ▾</view></picker></view></view>
+      <view wx:if="{{loading}}" class="store-line">正在重新核对档期…</view><view wx:else class="badge {{garment.available ? 'available' : 'unavailable'}}">{{garment.available ? '所选日期可预约' : garment.unavailableReason}}</view><view class="small muted spaced">租期 {{days}} 天 · 取还当日均计费 · 归还当日 {{settings.returnTime}} 前还衣</view>
+    </view>
+    <view class="panel">
+      <view class="row"><button class="month-button" aria-label="上个月" bindtap="previousMonth">‹</button><view class="section-title">{{monthTitle}}</view><button class="month-button" aria-label="下个月" bindtap="nextMonth">›</button></view>
+      <view wx:if="{{calendarError}}" class="error">{{calendarError}}<button class="link" bindtap="loadCalendar">重试</button></view><view wx:elif="{{calendarLoading}}" class="empty">正在加载档期…</view>
+      <view wx:else class="calendar"><view wx:for="{{weekdays}}" wx:key="*this" class="weekday">{{item}}</view><view wx:for="{{cells}}" wx:key="key" class="calendar-cell"><button wx:if="{{!item.blank}}" class="day day-{{item.status}} {{item.selected ? 'selected' : ''}}" disabled="{{item.disabled}}" data-date="{{item.date}}" bindtap="chooseDay" aria-label="{{item.date}} {{item.label}}"><view>{{item.number}}</view><view class="day-label">{{item.label}}</view></button></view></view>
+      <view class="small muted spaced">点击可用日期选择当天租赁，也可用上方日期选择多天。归还后需预留 {{settings.cleaningDays}} 天清洗；最终以店主确认为准。</view>
+    </view>
+    <view class="panel"><view class="section-title">租赁须知</view><view class="rule-text spaced">{{settings.rentalRules || '到店试穿并确认衣服与配饰；租金和押金在门店办理。请按约定时间归还。'}}</view><button wx:if="{{settings.phone}}" class="link" bindtap="callStore">联系门店 ›</button></view>
+  </block>
+</view>
+<view wx:if="{{garment}}" class="bottom-bar"><view class="row"><view><view class="small muted">{{days}} 天租金 · 押金另计</view><view class="price">¥{{rentalText}}</view></view><button class="primary" disabled="{{loading || !!error || !garment.available}}" bindtap="book">申请预约</button></view></view>

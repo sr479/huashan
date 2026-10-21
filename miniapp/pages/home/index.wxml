@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="row top-line">
+    <view><view class="brand">{{settings.storeName || '花山节'}}</view><view class="eyebrow">苗族服饰 · 到店取还</view></view>
+    <button class="link" bindtap="lookup">查询预约 ›</button>
+  </view>
+  <view class="hero">
+    <view class="hero-flower">✦</view>
+    <view class="hero-title">一身苗族盛装，<view>一场花山之约。</view></view>
+    <view class="hero-copy">{{settings.introduction || '选一套心仪的服饰，把山间的好时光穿在身上。'}}</view>
+    <view class="hero-tags">每套独立管理　·　档期清晰可查　·　到店付款</view>
+  </view>
+  <view wx:if="{{settings.notice}}" class="notice">{{settings.notice}}</view>
+  <view class="panel">
+    <view class="row"><view class="section-heading">先选日期，再挑盛装</view><text class="small muted">共 {{days}} 天</text></view>
+    <view class="date-row">
+      <view class="field"><text class="field-label">取衣日期</text><picker mode="date" value="{{start}}" start="{{today}}" end="{{maxStart}}" bindchange="changeStart"><view class="date-value">{{start}} ▾</view></picker></view>
+      <view class="field"><text class="field-label">归还日期</text><picker mode="date" value="{{end}}" start="{{start}}" end="{{maxEnd}}" bindchange="changeEnd"><view class="date-value">{{end}} ▾</view></picker></view>
+    </view>
+    <view class="row"><text class="small muted">取还当日均计费 · 归还后预留清洗</text><switch checked="{{onlyAvailable}}" color="#294e57" aria-label="只看所选日期可租" bindchange="changeAvailability" /></view>
+    <view class="small muted">{{onlyAvailable ? '仅展示所选日期可预约的服装' : '展示全部服装和档期状态'}}</view>
+  </view>
+  <input class="input search" value="{{search}}" placeholder="搜索服装名称、编号或尺码" maxlength="80" bindinput="changeSearch" />
+  <scroll-view scroll-x class="categories"><view class="category-list"><button wx:for="{{categories}}" wx:key="*this" class="category {{category === item ? 'active' : ''}}" data-category="{{item}}" bindtap="changeCategory">{{item}}</button></view></scroll-view>
+  <view wx:if="{{hasDemo}}" class="small demo-note">当前包含示例服装和档期，实际库存以门店确认及实拍为准。</view>
+  <view wx:if="{{error}}" class="error">{{error}}<button class="link" bindtap="load">重新查询</button></view>
+  <view wx:elif="{{loading}}" class="empty">正在核对服装与档期…</view>
+  <view wx:else>
+    <view class="collection">
+      <button wx:for="{{garments}}" wx:key="id" class="garment-card" data-id="{{item.id}}" bindtap="openGarment" aria-label="{{item.name}}，查看详情与档期">
+        <view class="card-photo"><garment-photo src="{{item.images[0] || ''}}" name="{{item.name}}" tone="{{item.tone}}" /><text class="sku">{{item.sku}} · 仅 1 套</text></view>
+        <view class="card-content"><view class="small muted">{{item.category}} · {{item.size}} 码</view><view class="garment-name">{{item.name}}</view><view class="price">¥{{item.priceText}}<text class="price-unit">/天</text></view><view class="badge {{item.available ? 'available' : 'unavailable'}}">{{item.availabilityText}}</view><view class="current-state">{{item.currentText}}</view><view class="card-link">查看服装与档期 ›</view></view>
+      </button>
+    </view>
+    <view wx:if="{{!garments.length}}" class="empty">暂时没有符合条件的服装<view class="small">可以调整日期、搜索或分类后再试。</view></view>
+  </view>
+  <view class="panel spaced"><view class="section-heading">四步赴一场花山之约</view><view class="guide"><view>01　选衣服、查档期</view><view>02　提交预约，等候店主确认</view><view>03　到店试穿，支付租金及押金后取衣</view><view>04　按时归还，验收后办理押金结算</view></view></view>
+  <view class="panel"><view class="section-heading">来门店，试试这一身</view><view class="store-line">地址：{{settings.address || '到店前请与店主确认'}}</view><view class="store-line">营业时间：{{settings.hours || '请与店主确认到店时间'}}</view><view class="store-line">归还截止：{{settings.returnTime || '以店主确认为准'}}</view><view class="row spaced"><button class="secondary" wx:if="{{settings.phone}}" bindtap="callStore">联系门店</button><button class="secondary" wx:if="{{settings.wechat}}" bindtap="copyWechat">复制门店微信</button></view></view>
+  <view class="footer">花山节 · 苗族服饰租赁<view>线上预约，线下相见</view></view>
+</view>

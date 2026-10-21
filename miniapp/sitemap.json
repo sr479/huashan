@@ -1,0 +1,8 @@
+{
+  "desc": "仅允许发现公开服装页面，预约回执不进入搜索。",
+  "rules": [
+    { "action": "allow", "page": "pages/home/index" },
+    { "action": "allow", "page": "pages/detail/index" },
+    { "action": "disallow", "page": "*" }
+  ]
+}

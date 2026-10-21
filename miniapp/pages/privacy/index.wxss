@@ -1,0 +1,2 @@
+.panel { font-size: 27rpx; line-height: 1.9; }
+.heading { font-size: 29rpx; font-weight: 600; margin-bottom: 16rpx; }

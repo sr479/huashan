@@ -1,0 +1,5 @@
+{
+  "navigationBarTitleText": "花山节 · 挑选服饰",
+  "enablePullDownRefresh": true,
+  "usingComponents": { "garment-photo": "/components/garment-photo/index" }
+}

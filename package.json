@@ -14,6 +14,7 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "backup": "node --env-file-if-exists=.env scripts/backup.mjs",
     "typecheck": "tsc --noEmit",
+    "miniapp:prepare": "node scripts/prepare-miniapp.mjs",
     "format": "prettier --write src server shared tests scripts *.json *.ts *.html *.yaml README.md"
   },
   "dependencies": {

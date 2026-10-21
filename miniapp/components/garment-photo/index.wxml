@@ -1,0 +1,8 @@
+<view class="photo tone-{{tone}}">
+  <image wx:if="{{src && !failed}}" class="image" src="{{src}}" mode="aspectFill" binderror="imageError" />
+  <view wx:else class="placeholder">
+    <view class="motif">✦</view>
+    <view class="name">{{name}}</view>
+    <view class="hint">{{failed ? '图片暂时无法加载' : '实拍待上传'}}</view>
+  </view>
+</view>

@@ -1,0 +1,38 @@
+page { background: #f8f5ef; color: #243c42; font-size: 28rpx; line-height: 1.6; }
+view, button, input, textarea, form { box-sizing: border-box; }
+form { display: block; }
+button { margin: 0; font-size: 27rpx; font-weight: 500; border-radius: 14rpx; line-height: 1.5; padding: 22rpx 28rpx; color: #243c42; background: #fff; }
+button::after { border: none; }
+button[disabled] { opacity: .45; color: #243c42; background: #e4e6e3; }
+.page { padding: 30rpx 30rpx 56rpx; }
+.panel { background: #fff; border: 1rpx solid #e8e5dd; border-radius: 22rpx; padding: 30rpx; margin-bottom: 24rpx; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.title { font-size: 38rpx; line-height: 1.4; font-weight: 600; }
+.subtitle { color: #73817e; font-size: 24rpx; }
+.eyebrow { color: #9b6250; letter-spacing: 4rpx; font-size: 22rpx; }
+.muted { color: #73817e; }
+.small { font-size: 24rpx; }
+.price { font-size: 40rpx; font-weight: 600; color: #a34e3c; }
+.price-unit { font-size: 23rpx; font-weight: 400; color: #73817e; margin-left: 6rpx; }
+.primary { background: #294e57; color: #fff; }
+.secondary { background: #eaf0ec; color: #294e57; }
+.link { background: transparent; padding: 12rpx 0; color: #345e68; font-size: 25rpx; }
+.wide { width: 100%; }
+.spaced { margin-top: 24rpx; }
+.badge { display: inline-block; padding: 5rpx 14rpx; font-size: 21rpx; border-radius: 8rpx; background: #f0ece4; color: #7e6b52; }
+.badge.available { color: #3b6552; background: #eaf1e9; }
+.badge.unavailable { color: #9a5b4a; background: #f9ece4; }
+.error { background: #faece6; color: #984d3c; border-radius: 14rpx; padding: 24rpx; margin: 20rpx 0; }
+.empty { text-align: center; padding: 70rpx 30rpx; color: #73817e; }
+.divider { border-top: 1rpx solid #ece9e1; margin: 24rpx 0; }
+.field { margin: 24rpx 0; }
+.field-label { display: block; margin-bottom: 12rpx; color: #425951; font-size: 25rpx; }
+.input { width: 100%; min-height: 88rpx; background: #f6f5f0; border: 1rpx solid #e8e5dc; border-radius: 12rpx; padding: 20rpx; font-size: 28rpx; }
+textarea.input { height: 190rpx; }
+.date-row { display: flex; gap: 18rpx; }
+.date-row .field { flex: 1; margin: 20rpx 0 12rpx; }
+.date-value { padding: 18rpx; background: #f5f5ef; border-radius: 12rpx; font-size: 27rpx; }
+.rule-text { white-space: pre-wrap; font-size: 25rpx; color: #65736c; }
+.bottom-bar { position: fixed; z-index: 5; bottom: 0; left: 0; right: 0; padding: 20rpx 30rpx calc(20rpx + env(safe-area-inset-bottom)); background: #fff; border-top: 1rpx solid #e4e4dc; }
+.bottom-space { padding-bottom: calc(170rpx + env(safe-area-inset-bottom)); }
+.store-line { margin-top: 14rpx; font-size: 25rpx; color: #63746b; }

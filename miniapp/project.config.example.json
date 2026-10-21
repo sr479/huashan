@@ -1,0 +1,22 @@
+{
+  "description": "花山节苗族服饰租赁顾客端",
+  "appid": "touristappid",
+  "projectname": "huashanjie",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "libVersion": "latest",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "packOptions": {
+    "ignore": [
+      { "type": "file", "value": "config.example.js" },
+      { "type": "file", "value": "project.config.example.json" },
+      { "type": "file", "value": "package.json" }
+    ]
+  }
+}
